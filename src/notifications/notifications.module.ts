@@ -1,0 +1,2 @@
+import { Module } from '@nestjs/common'; import { BullModule } from '@nestjs/bullmq'; import { NotificationsProcessor } from './notifications.processor'; import { NotificationsController } from './notifications.controller'; import { PrismaService } from '../common/prisma.service';
+@Module({imports:[BullModule.registerQueue({name:'notifications'})],providers:[NotificationsProcessor,PrismaService],controllers:[NotificationsController]}) export class NotificationsModule {}

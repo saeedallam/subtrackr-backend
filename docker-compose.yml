@@ -1,0 +1,40 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: subtrackr-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:7-alpine
+    container_name: subtrackr-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  app:
+    build: .
+    container_name: subtrackr-app
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+      - redis
+    environment:
+      PORT: 3001
+      DATABASE_URL: mongodb://mongodb:27017/subtrackr
+      JWT_SECRET: change-me-in-compose
+      JWT_ACCESS_TTL: 15m
+      JWT_REFRESH_TTL: 7d
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    ports:
+      - "3001:3001"
+
+volumes:
+  mongo_data:
+  redis_data:

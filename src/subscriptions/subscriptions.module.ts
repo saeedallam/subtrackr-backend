@@ -1,0 +1,2 @@
+import { Module } from '@nestjs/common'; import { BullModule } from '@nestjs/bullmq'; import { SubscriptionsController } from './subscriptions.controller'; import { SubscriptionsService } from './subscriptions.service'; import { PrismaService } from '../common/prisma.service';
+@Module({imports:[BullModule.registerQueue({name:'notifications'})],providers:[PrismaService,SubscriptionsService],controllers:[SubscriptionsController],exports:[SubscriptionsService]}) export class SubscriptionsModule {}
